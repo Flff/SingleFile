@@ -36,6 +36,7 @@ const args = require("yargs")
 		"back-end": "puppeteer",
 		"browser-headless": true,
 		"browser-executable-path": "",
+		"browser-debugger-url": "",
 		"browser-width": 1280,
 		"browser-height": 720,
 		"browser-load-max-time": 60000,
@@ -70,11 +71,13 @@ const args = require("yargs")
 		"user-script-enabled": true
 	})
 	.options("back-end", { description: "Back-end to use" })
-	.choices("back-end", ["jsdom", "puppeteer", "webdriver-chromium", "webdriver-gecko", "puppeteer-firefox"])
+	.choices("back-end", ["jsdom", "puppeteer", "webdriver-chromium", "webdriver-gecko", "puppeteer-firefox", "puppeteer-remote"])
 	.options("browser-headless", { description: "Run the browser in headless mode (puppeteer, puppeteer-firefox, webdriver-gecko, webdriver-chromium)" })
 	.boolean("browser-headless")
 	.options("browser-executable-path", { description: "Path to chrome/chromium executable (puppeteer, puppeteer-firefox, webdriver-gecko, webdriver-chromium)" })
 	.string("browser-executable-path")
+	.options("browser-debugger-url", { description: "WebSocketDebuggerURL of an existing chrome instance" })
+	.string("browser-debugger-url")
 	.options("browser-width", { description: "Width of the browser viewport in pixels" })
 	.number("browser-width")
 	.options("browser-height", { description: "Height of the browser viewport in pixels" })
@@ -148,11 +151,14 @@ const backEnds = {
 	jsdom: "./back-ends/jsdom.js",
 	puppeteer: "./back-ends/puppeteer.js",
 	"puppeteer-firefox": "./back-ends/puppeteer-firefox.js",
+	"puppeteer-remote": "./back-ends/puppeteer-remote.js",
 	"webdriver-chromium": "./back-ends/webdriver-chromium.js",
 	"webdriver-gecko": "./back-ends/webdriver-gecko.js"
 };
 args.compressCSS = args.compressCss;
 args.compressHTML = args.compressHtml;
+args.browserDebuggerURL = args.browserDebuggerUrl;
+
 if (!/^(https?|file):\/\//.test(args.url)) {
 	args.url = fileUrl(args.url);
 }
